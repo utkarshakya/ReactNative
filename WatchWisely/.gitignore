@@ -1,0 +1,11 @@
+# Files
+expo-env.d.ts
+*.env
+
+# Folders
+*.expo/
+*.vscode/
+*node_modules/
+
+# Context files for CLI's
+GEMINI.md
