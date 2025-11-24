@@ -29,8 +29,8 @@ const Search = () => {
   const optimizedSearch = optimizeSearchResults(search);
 
   // Responsive spacing/sizing
-  const titleSize = useResponsiveFont(25); // ~25px responsive
-  const topSpacing = useResponsiveHeight(4); // top padding
+  const titleSize = useResponsiveFont(25);
+  const topSpacing = useResponsiveHeight(4);
   const horizontalMargin = useResponsiveWidth(5);
 
   useEffect(() => {

@@ -1,6 +1,10 @@
 import { useWindowDimensions } from "react-native";
 
-// Hook to determine device type based on screen width
+/**
+ * @name useDeviceType
+ * @description Hook to determine device type based on screen width
+ * @returns {string}
+ */
 export const useDeviceType = () => {
     const { width } = useWindowDimensions();
     if (width >= 1024) {
@@ -12,17 +16,34 @@ export const useDeviceType = () => {
     }
 }
 
-// Function to get responsive width and height based on percentage
+/**
+ * @name useResponsiveWidth
+ * @description Hook to for responsive width
+ * @param {number} percentage 
+ * @returns {number}
+ */
 export const useResponsiveWidth = (percentage) => {
     const { width } = useWindowDimensions();
     return (percentage / 100) * width;
 }
+
+/**
+ * @name useResponsiveHeight
+ * @description Hook to get responsive height
+ * @param {number} percentage 
+ * @returns {number}
+ */
 export const useResponsiveHeight = (percentage) => {
     const { height } = useWindowDimensions();
     return (percentage / 100) * height;
 }
 
-// Hook to get responsive font size
+/**
+ * @name useResponsiveFont
+ * @description Hook to get responsive font size
+ * @param {number} baseFontSize 
+ * @returns {number}
+ */
 export const useResponsiveFont = (baseFontSize) => {
     const { width, fontScale } = useWindowDimensions();
     const baseWidth = 375; // reference device width

@@ -1,20 +1,15 @@
 import { View, TouchableOpacity, Text } from "react-native";
-import { useColors } from "../../src/hooks/useColors";
-import {
-  useResponsiveHeight,
-  useResponsiveWidth,
-} from "../../src/hooks/useResponsive";
 import { Ionicons } from "@expo/vector-icons";
+import { useColors } from "../../hooks/useColors";
+import { useResponsiveFont, useResponsiveHeight, useResponsiveWidth } from "../../hooks/useResponsive";
 
-const CustomTabBar = ({ state, descriptors, navigation }) => {
+const AppTabBar = ({ state, descriptors, navigation }) => {
   const { Colors } = useColors();
 
-  const tabHeight = useResponsiveHeight(8); // ~8% of screen height
-  const horizontal = useResponsiveWidth(8); // Side spacing based on screen width
-  const bottomPadding = useResponsiveHeight(2); // Bottom padding based on screen height
-  const radius = useResponsiveHeight(5); // Border radius based on screen height
-  const iconSize = useResponsiveWidth(6); // Icon size based on screen width
-  const labelFontSize = useResponsiveWidth(3); // Label font size based on screen width
+  const tabHeight = useResponsiveHeight(8);
+  const fontSize = tabHeight * 0.1;
+  const horizontal = useResponsiveWidth(5);
+  const bottomPadding = useResponsiveHeight(2);
 
   return (
     <View
@@ -26,7 +21,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
         height: tabHeight,
         width: "auto",
         backgroundColor: Colors.tab.tabBg,
-        borderRadius: radius,
+        borderRadius: 999,
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
@@ -56,7 +51,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               alignItems: "center",
               justifyContent: "center",
               height: tabHeight,
-              borderRadius: radius,
+              borderRadius: 999,
             }}
           >
             <Ionicons
@@ -65,14 +60,14 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
                   ? options.tabBarFocusedIconName
                   : options.tabBarUnfocusedIconName
               }
-              size={iconSize}
+              size={fontSize * 3}
               color={iconColor}
             />
             <Text
               style={{
                 color: iconColor,
-                fontSize: labelFontSize,
-                fontWeight: "bold",
+                fontSize,
+                fontWeight: "bold"
               }}
             >
               {options.tabBarLabel || route.name}
@@ -84,4 +79,4 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
   );
 };
 
-export default CustomTabBar;
+export default AppTabBar;

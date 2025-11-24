@@ -30,7 +30,7 @@ export const Colors = {
         ui: {
             inputBg: "#FFFFFF",
             placeholder: "#94A3B8",
-            buttonBg: "#3B82F6",
+            buttonBg: "#3463ffff",
             buttonText: "#FFFFFF",
             icon: "#1E293B",
         },
@@ -107,7 +107,7 @@ export const Colors = {
         ui: {
             inputBg: "#1E293B",
             placeholder: "#94A3B8",
-            buttonBg: "#60A5FA",
+            buttonBg: "#2486ffff",
             buttonText: "#FFFFFF",
             icon: "#F1F5F9",
         },

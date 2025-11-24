@@ -4,31 +4,20 @@ import PulsePosterSkeleton from "./PulsePosterSkeleton";
 import { useResponsiveHeight } from "../hooks/useResponsive";
 
 const Carousel = ({
-  /**
-   * When true helps in showing pulseCards
-   */
   isLoading,
-  /**
-   * Array of objects
-   */
   data,
-  /**
-   * Decribe the outer style of the Carousel
-   */
   outerStyle = {
-    /**
-     * Relative to height, Pass in Percentage
-     */
     relativeTopMargin: 1,
-
-  } }) => {
-
-  const marginTop = useResponsiveHeight(outerStyle.relativeMarginFromTop)
+  },
+}) => {
+  const marginTop = useResponsiveHeight(outerStyle.relativeMarginFromTop);
 
   return (
-    <View style={{
-      marginTop
-    }}>
+    <View
+      style={{
+        marginTop,
+      }}
+    >
       {/* <Text style={{
         color: '#d1d5db',
         marginHorizontal: 20,
@@ -54,8 +43,9 @@ const Carousel = ({
           keyExtractor={(item, index) =>
             item.id?.toString() || index.toString()
           }
-          renderItem={({ item }) => <MovieCard data={item} relativeHeight={30} />
-          }
+          renderItem={({ item }) => (
+            <MovieCard data={item} relativeHeight={30} />
+          )}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         />

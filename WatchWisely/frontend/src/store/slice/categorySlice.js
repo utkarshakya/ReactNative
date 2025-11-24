@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Constants from "expo-constants";
 import axios from "axios";
 
-// Old Scholl
+// Old School
 // import getMetroHostIp from "../../utils/getLocalIp";
 // export const fetchCategory = createAsyncThunk(
 //   "movie/fetchCategory",

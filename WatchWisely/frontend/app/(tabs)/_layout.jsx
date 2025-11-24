@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import CustomTabBar from "../../src/components/CustomTabBar";
+import AppTabBar from "../../src/components/ui/AppTabBar";
 
 export default function TabLayout() {
   return (
@@ -8,7 +8,14 @@ export default function TabLayout() {
         headerShown: false,
         tabBarHideOnKeyboard: true,
       }}
-      tabBar={(props) => <CustomTabBar {...props} />}
+      tabBar={({ state, descriptors, navigation }) => (
+        <AppTabBar
+          state={state}
+          descriptors={descriptors}
+          navigation={navigation}
+        />
+      )}
+      initialRouteName="profile"
     >
       <Tabs.Screen
         name="index"

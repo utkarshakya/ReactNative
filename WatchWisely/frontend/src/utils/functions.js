@@ -1,3 +1,7 @@
+/**
+ * @param {Object[]} data 
+ * @returns {Object[]}
+ */
 export const optimizeSearchResults = (data) => {
     if (data.length === 0) return [];
 
