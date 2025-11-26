@@ -38,7 +38,7 @@ const startServer = async () => {
 
     const port = process.env.PORT || 4000;
     app.listen(port, () => {
-      console.log(`Auth backend listening on port ${port}`);
+      console.log(`Backend listening on port ${port}`);
     });
   } catch (error) {
     console.error('Failed to start server', error);

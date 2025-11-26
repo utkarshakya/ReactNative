@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -12,12 +16,19 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
-      minlength: 6,
+      minlength: 8,
     },
-    refreshToken: {
-      type: String,
-    },
+    authMethod: {
+      google: {
+        id: {
+          type: String,
+          unique: true,
+        },
+        refreshToken: {
+          type: String,
+        }
+      },
+    }
   },
   {
     timestamps: true,
@@ -26,7 +37,7 @@ const userSchema = new mongoose.Schema(
 
 // Middleware to hash the password before saving
 userSchema.pre('save', async function hashPassword(next) {
-  if (!this.isModified('password')) return next();
+  if (!this.isModified('password') || !this.password) return next();
 
   try {
     const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
@@ -44,12 +55,12 @@ userSchema.methods.isPasswordMatch = function isPasswordMatch(plainPassword) {
 
 userSchema.methods.storeRefreshToken = async function storeRefreshToken(token) {
   const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
-  this.refreshToken = await bcrypt.hash(token, saltRounds);
+  this.authMethod.google.refreshToken = await bcrypt.hash(token, saltRounds);
 };
 
 userSchema.methods.isRefreshTokenValid = function isRefreshTokenValid(token) {
-  if (!this.refreshToken) return false;
-  return bcrypt.compare(token, this.refreshToken);
+  if (!this.authMethod.google.refreshToken) return false;
+  return bcrypt.compare(token, this.authMethod.google.refreshToken);
 };
 
 module.exports = mongoose.model('User', userSchema);

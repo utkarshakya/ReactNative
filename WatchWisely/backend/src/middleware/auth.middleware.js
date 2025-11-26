@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user.model');
 const { verifyAccessToken } = require('../utils/token');
 
 const authMiddleware = async (req, res, next) => {

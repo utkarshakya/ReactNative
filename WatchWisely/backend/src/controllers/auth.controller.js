@@ -1,4 +1,6 @@
-const User = require('../models/User');
+const User = require('../models/user.model');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const {
   generateAccessToken,
   generateRefreshToken,
@@ -7,15 +9,16 @@ const {
 
 const buildUserResponse = (user) => ({
   id: user._id,
+  name: user.name,
   email: user.email,
 });
 
 const register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
+    if (!email || !password || !name) {
+      return res.status(400).json({ message: 'Email, password and name are required' });
     }
 
     const existingUser = await User.findOne({ email });
@@ -23,7 +26,7 @@ const register = async (req, res) => {
       return res.status(409).json({ message: 'User already exists' });
     }
 
-    const user = new User({ email, password });
+    const user = new User({ email, password, name });
     await user.save();
 
     const accessToken = generateAccessToken({ sub: user._id });
@@ -137,9 +140,57 @@ const logout = async (req, res) => {
   }
 };
 
+const googleLogin = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const { email, name, sub: googleId } = ticket.getPayload();
+
+    let user = await User.findOne({
+      $or: [{ email }, { 'authMethod.google.id': googleId }],
+    });
+
+    if (!user) {
+      user = await User.create({
+        name,
+        email,
+        authMethod: {
+          google: {
+            id: googleId,
+          },
+        },
+      });
+    } else if (!user.authMethod?.google?.id) {
+      // Link Google account to existing user
+      user.authMethod = {
+        ...user.authMethod,
+        google: { id: googleId },
+      };
+      await user.save();
+    }
+
+    const accessToken = generateAccessToken({ sub: user._id });
+    const refreshToken = generateRefreshToken({ sub: user._id });
+
+    await user.storeRefreshToken(refreshToken);
+    await user.save();
+
+    return res.json({
+      user: buildUserResponse(user),
+      tokens: { accessToken, refreshToken },
+    });
+  } catch (error) {
+    return res.status(401).json({ message: 'Google login failed', error: error.message });
+  }
+};
+
 module.exports = {
   register,
   login,
   refresh,
   logout,
+  googleLogin,
 };

@@ -9,7 +9,12 @@
     "start": "NODE_ENV=production node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["express", "node", "mongodb", "auth"],
+  "keywords": [
+    "express",
+    "node",
+    "mongodb",
+    "auth"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -17,6 +22,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "google-auth-library": "^10.5.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.4"
   },
