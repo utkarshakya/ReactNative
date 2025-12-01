@@ -2,8 +2,9 @@ import 'dotenv/config';
 
 export default {
   expo: {
-    name: "WatchWisely",
-    slug: "WatchWisely",
+    name: "Watch Wisely",
+    slug: "watch-wisely",
+    owner: "utkarshakya",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./src/assets/images/icon.png",
@@ -11,7 +12,8 @@ export default {
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
-      supportsTablet: true
+      supportsTablet: true,
+      bundleIdentifier: "com.utkarshakya.watchwisely"
     },
     android: {
       adaptiveIcon: {
@@ -21,7 +23,8 @@ export default {
         monochromeImage: "./src/assets/images/android-icon-monochrome.png"
       },
       edgeToEdgeEnabled: true,
-      predictiveBackGestureEnabled: false
+      predictiveBackGestureEnabled: false,
+      package: "com.utkarshakya.watchwisely"
     },
     web: {
       output: "static",
@@ -50,7 +53,9 @@ export default {
     extra: {
       TMDB_TOKEN: process.env.EXPO_PUBLIC_TMDB_TOKEN,
       TMDB_BASE_URL: process.env.EXPO_PUBLIC_TMDB_BASE_URL,
-      TMDB_IMAGE_BASE_URL: process.env.EXPO_PUBLIC_TMDB_IMAGE_BASE_URL
+      TMDB_IMAGE_BASE_URL: process.env.EXPO_PUBLIC_TMDB_IMAGE_BASE_URL,
+      AUTH_API_URL: process.env.EXPO_PUBLIC_AUTH_API_URL,
+      GOOGLE_CLIENT_ID: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
     },
   }
 };

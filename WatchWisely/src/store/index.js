@@ -10,19 +10,20 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import { categorySlice, moviesSlice, searchSlice, themeSlice } from "./slice";
+import { categorySlice, moviesSlice, searchSlice, themeSlice, authSlice } from "./slice";
 
 const rootReducer = combineReducers({
   category: categorySlice.reducer,
   movies: moviesSlice.reducer,
   search: searchSlice.reducer,
   theme: themeSlice.reducer,
+  auth: authSlice.reducer,
 });
 
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
-  whitelist: ["theme"], // only theme will be persisted
+  whitelist: ["theme", "auth"], // only theme and auth will be persisted
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

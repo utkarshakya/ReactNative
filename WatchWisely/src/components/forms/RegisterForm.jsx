@@ -2,7 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { View, Text } from "react-native";
 import { useColors } from "../../hooks/useColors";
-import { useResponsiveFont, useResponsiveHeight, useResponsiveWidth } from "../../hooks/useResponsive";
+import { useResponsiveFont, useResponsiveHeight } from "../../hooks/useResponsive";
 import AppInput from "../ui/AppInput";
 import AppPressable from "../ui/AppPressable";
 import GoogleSignInButton from "../ui/GoogleSignInButton";
@@ -48,7 +48,7 @@ const RegisterForm = () => {
                 }} />
             </View>
             <View>
-                <GoogleSignInButton onPress={() => { handleRegister }} />
+                <GoogleSignInButton />
             </View>
         </SafeAreaView>
     );
