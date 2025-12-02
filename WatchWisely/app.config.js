@@ -51,11 +51,15 @@ export default {
       reactCompiler: true
     },
     extra: {
+      eas: {
+        projectId: process.env.EXPO_PUBLIC_EAS_PROJECT_ID,
+      },
       TMDB_TOKEN: process.env.EXPO_PUBLIC_TMDB_TOKEN,
       TMDB_BASE_URL: process.env.EXPO_PUBLIC_TMDB_BASE_URL,
       TMDB_IMAGE_BASE_URL: process.env.EXPO_PUBLIC_TMDB_IMAGE_BASE_URL,
       AUTH_API_URL: process.env.EXPO_PUBLIC_AUTH_API_URL,
-      GOOGLE_CLIENT_ID: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID,
+      GOOGLE_WEB_CLIENT_ID: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
+      GOOGLE_ANDROID_CLIENT_ID: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
     },
   }
 };

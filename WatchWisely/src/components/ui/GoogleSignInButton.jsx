@@ -1,4 +1,4 @@
-import { Pressable, Text, View, StyleSheet } from "react-native";
+import { Pressable, Text, View, StyleSheet, Alert } from "react-native";
 import { Image } from "expo-image";
 import { useColors } from "../../hooks/useColors";
 import {
@@ -7,12 +7,8 @@ import {
   useResponsiveWidth,
 } from "../../hooks/useResponsive";
 
-import Constants from "expo-constants";
-import { useDispatch } from "react-redux";
-import { loginWithGoogle } from "../../store/slice/authSlice";
-import { useEffect } from "react";
-
-const CLIENT_ID = Constants.expoConfig?.extra?.GOOGLE_CLIENT_ID;
+import { useDispatch, useSelector } from "react-redux";
+import { loginWithGoogle, selectAuth } from "../../store/slice/authSlice";
 
 /**
  * A custom Google Sign-In button component that uses the Expo AuthSession API
@@ -26,20 +22,64 @@ const GoogleSignInButton = ({ disabled = false, style = {} }) => {
   const { Colors } = useColors();
   const dispatch = useDispatch();
 
+  const { isLoading } = useSelector(selectAuth);
+
   // Google branding colors
   const backgroundColor = "#FFFFFF"; // Standard white background
   const textColor = "#1F1F1F"; // Standard dark text
-
   const shadowColor = Colors.shadow.shadow1;
   const fontSize = useResponsiveFont(14);
   const paddingVertical = useResponsiveHeight(1.5);
   const width = useResponsiveWidth(90);
   const iconSize = useResponsiveFont(20);
 
+  const handleGoogleSignIn = async () => {
+    try {
+      // Step 1: Check if Google Play Services are available (Android only)
+      await GoogleSignin.hasPlayServices();
+
+      // Step 2: Trigger Google Sign-In UI
+      const userInfo = await GoogleSignin.signIn();
+
+      // Step 3: Extract the idToken from response
+      const idToken = userInfo.data.idToken;
+
+      if (!idToken) {
+        throw new Error("No ID token received from Google");
+      }
+
+      // Step 4: Send idToken to your backend via Redux
+      const result = await dispatch(loginWithGoogle(idToken)).unwrap();
+
+      // Step 5: Success! User is logged in
+      console.log("Login successful:", result.user);
+    } catch (error) {
+      // Handle different types of errors
+      console.error("Google Sign-In Error:", error);
+
+      if (error.code === "SIGN_IN_CANCELLED") {
+        // User closed the sign-in dialog
+        Alert.alert("Cancelled", "Sign-in was cancelled");
+      } else if (error.code === "IN_PROGRESS") {
+        // Sign-in is already in progress
+        Alert.alert("Please wait", "Sign-in is already in progress");
+      } else if (error.code === "PLAY_SERVICES_NOT_AVAILABLE") {
+        // Google Play Services not available or outdated
+        Alert.alert("Error", "Google Play Services not available");
+      } else {
+        // Other errors (network, backend, etc.)
+        Alert.alert(
+          "Sign-In Failed",
+          error.message || "Something went wrong. Please try again."
+        );
+      }
+    }
+  };
+
   return (
     <Pressable
-      onPress={() => null}
-      disabled={disabled}
+      onPress={handleGoogleSignIn}
+      disabled={disabled || isLoading}
       style={({ pressed }) => [
         styles.container,
         {
@@ -49,7 +89,7 @@ const GoogleSignInButton = ({ disabled = false, style = {} }) => {
           shadowColor,
         },
         pressed && styles.pressed,
-        disabled && styles.disabled,
+        (disabled || isLoading) && styles.disabled,
         style,
       ]}
     >
@@ -62,7 +102,7 @@ const GoogleSignInButton = ({ disabled = false, style = {} }) => {
           contentFit="contain"
         />
         <Text style={[styles.text, { color: textColor, fontSize }]}>
-          Sign in with Google
+          {isLoading ? "Signing in..." : "Sign in with Google"}
         </Text>
       </View>
     </Pressable>
