@@ -142,16 +142,30 @@ const logout = async (req, res) => {
 
 const googleLogin = async (req, res) => {
   try {
+    console.log("Got the request");
     const { idToken } = req.body;
+
+    if (idToken) {
+      console.log("Got the Token");
+    }
     const ticket = await client.verifyIdToken({
       idToken,
       audience: process.env.GOOGLE_WEB_CLIENT_ID,
     });
     const { email, name, sub: googleId } = ticket.getPayload();
+    console.log("Get the ticket, means actual data")
 
     let user = await User.findOne({
       $or: [{ email }, { 'authMethod.google.id': googleId }],
     });
+
+    if (user) {
+      console.log("Found the user");
+      console.log("Logging in the user")
+    } else {
+      console.log("No user found");
+      console.log("Creating a new user");
+    }
 
     if (!user) {
       user = await User.create({

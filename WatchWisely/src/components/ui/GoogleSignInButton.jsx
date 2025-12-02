@@ -6,9 +6,11 @@ import {
   useResponsiveHeight,
   useResponsiveWidth,
 } from "../../hooks/useResponsive";
+import Constants from "expo-constants";
 
 import { useDispatch, useSelector } from "react-redux";
 import { loginWithGoogle, selectAuth } from "../../store/slice/authSlice";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 /**
  * A custom Google Sign-In button component that uses the Expo AuthSession API
@@ -48,29 +50,46 @@ const GoogleSignInButton = ({ disabled = false, style = {} }) => {
         throw new Error("No ID token received from Google");
       }
 
+      // ADD THIS LOGGING
+      console.log("=== Sign-In Success ===");
+      console.log("Got idToken:", idToken.substring(0, 50) + "..."); // Show first 50 chars
+      console.log("User email:", userInfo.data.user.email);
+      console.log(
+        "Sending to backend:",
+        Constants.expoConfig?.extra?.AUTH_API_URL
+      );
+
       // Step 4: Send idToken to your backend via Redux
       const result = await dispatch(loginWithGoogle(idToken)).unwrap();
 
       // Step 5: Success! User is logged in
       console.log("Login successful:", result.user);
     } catch (error) {
-      // Handle different types of errors
-      console.error("Google Sign-In Error:", error);
+      // Enhanced error logging
+      console.error("=== Google Sign-In Error Details ===");
+      console.error("Error code:", error.code);
+      console.error("Error message:", error.message);
+
+      // Log backend response if it exists
+      if (error.response) {
+        console.error("Backend status:", error.response.status);
+        console.error("Backend data:", error.response.data);
+      }
+
+      // Log the full error object
+      console.error("Full error:", JSON.stringify(error, null, 2));
 
       if (error.code === "SIGN_IN_CANCELLED") {
-        // User closed the sign-in dialog
         Alert.alert("Cancelled", "Sign-in was cancelled");
       } else if (error.code === "IN_PROGRESS") {
-        // Sign-in is already in progress
         Alert.alert("Please wait", "Sign-in is already in progress");
       } else if (error.code === "PLAY_SERVICES_NOT_AVAILABLE") {
-        // Google Play Services not available or outdated
         Alert.alert("Error", "Google Play Services not available");
       } else {
-        // Other errors (network, backend, etc.)
+        // Show more details in the alert
         Alert.alert(
           "Sign-In Failed",
-          error.message || "Something went wrong. Please try again."
+          error.message || "Something went wrong. Check console for details."
         );
       }
     }

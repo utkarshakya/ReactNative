@@ -18,6 +18,22 @@ export const loginWithGoogle = createAsyncThunk(
     }
 );
 
+// Sample function for alter on Register click. It is to check if the backend is called or not
+export const register = createAsyncThunk(
+    'auth/register',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(`${AUTH_API_URL}/register`, credentials);
+            console.log(response.data)
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || "Registration failed"
+            );
+        }
+    }
+)
+
 const initialState = {
     user: null,
     accessToken: null,

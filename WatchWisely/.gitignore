@@ -13,7 +13,6 @@ node_modules/
 # A `.env.example` file should be committed instead to show what variables are needed.
 .env
 *.env
-.env.*
 backend/.env
 
 # Log files
