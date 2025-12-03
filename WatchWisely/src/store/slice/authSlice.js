@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Constants from "expo-constants";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const { AUTH_API_URL } = Constants.expoConfig?.extra;
 
@@ -14,6 +15,19 @@ export const loginWithGoogle = createAsyncThunk(
             return rejectWithValue(
                 error.response?.data?.message || "Google login failed"
             );
+        }
+    }
+);
+
+export const logoutWithGoogle = createAsyncThunk(
+    "auth/logoutWithGoogle",
+    async (_, { rejectWithValue }) => {
+        try {
+            await GoogleSignin.signOut();
+            return null;
+        } catch (error) {
+            console.error("Error signing out from Google:", error);
+            return null;
         }
     }
 );
@@ -68,6 +82,12 @@ const authSlice = createSlice({
             .addCase(loginWithGoogle.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
+            })
+            .addCase(logoutWithGoogle.fulfilled, (state) => {
+                state.user = null;
+                state.accessToken = null;
+                state.refreshToken = null;
+                state.error = null;
             });
     },
 });

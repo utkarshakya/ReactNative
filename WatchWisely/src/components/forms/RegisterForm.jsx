@@ -1,6 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
-import { View, Text, Alert } from "react-native";
+import { View, Text } from "react-native";
 import { useColors } from "../../hooks/useColors";
 import {
   useResponsiveFont,
@@ -26,14 +26,13 @@ const RegisterForm = () => {
   const dispatch = useDispatch();
 
   const handleRegister = () => {
-    // Alert.alert('anas')
+    
     dispatch(register());
   };
 
   return (
     <SafeAreaView
       style={{
-        flex: 1,
         backgroundColor: Colors.core.bg,
         alignItems: "center",
         gap: useResponsiveHeight(5),

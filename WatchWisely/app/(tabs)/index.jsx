@@ -30,6 +30,7 @@ const Index = () => {
   }, [dispatch]);
 
   if (status === "failed") {
+    const errorMessage = typeof error === 'string' ? error : error?.message || 'Failed to load movies';
     return (
       <SafeAreaView
         style={{
@@ -46,7 +47,7 @@ const Index = () => {
             fontWeight: "600",
           }}
         >
-          Error: {error}
+          Error: {errorMessage}
         </Text>
       </SafeAreaView>
     );
