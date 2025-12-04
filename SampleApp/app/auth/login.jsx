@@ -35,7 +35,13 @@ export default function Login() {
           value={email}
           onChangeText={setEmail}
         />
-        <View style={{ flexDirection: "row", position: "relative" }}>
+        <View
+          style={{
+            width: "100%",
+            alignItems: "center",
+            position: "relative",
+          }}
+        >
           <ThemedInput
             placeholder={"Enter your password"}
             isPassword={true}
@@ -48,8 +54,7 @@ export default function Login() {
             setIsPasswordVisible={setIsPasswordVisible}
             extraStyle={{
               position: "absolute",
-              right: 20,
-              top: 0,
+              right: 50,
               height: "100%",
               justifyContent: "center",
             }}
@@ -64,7 +69,7 @@ export default function Login() {
           onPress={async () => {
             const isValid = await login(email, password);
             if (isValid) {
-              router.replace("/(dashboard)/profile");
+              router.replace("/dashboard/profile");
             }
           }}
         />
@@ -72,7 +77,7 @@ export default function Login() {
         <Spacer height={20} />
         <ThemedText extraStyle={{ fontSize: 14 }}>New here</ThemedText>
         <ThemedLink
-          url={"/register"}
+          url={"/auth/register"}
           extraStyle={{ fontSize: 14, color: "skyblue" }}
         >
           Create a new account

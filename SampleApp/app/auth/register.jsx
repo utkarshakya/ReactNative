@@ -43,7 +43,13 @@ export default function Login() {
           value={email}
           onChangeText={setEmail}
         />
-        <View style={{ flexDirection: "row", position: "relative" }}>
+        <View
+          style={{
+            width: "100%",
+            alignItems: "center",
+            position: "relative",
+          }}
+        >
           <ThemedInput
             placeholder={"Create a strong password"}
             isPassword={true}
@@ -56,8 +62,7 @@ export default function Login() {
             setIsPasswordVisible={setIsPasswordVisible}
             extraStyle={{
               position: "absolute",
-              right: 20,
-              top: 0,
+              right: 50,
               height: "100%",
               justifyContent: "center",
             }}
@@ -78,7 +83,7 @@ export default function Login() {
           Already have an account
         </ThemedText>
         <ThemedLink
-          url={"/login"}
+          url={"/auth/login"}
           extraStyle={{ fontSize: 14, color: "skyblue" }}
         >
           Login instead
