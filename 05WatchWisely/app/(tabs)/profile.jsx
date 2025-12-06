@@ -28,7 +28,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     await dispatch(logoutWithGoogle());
-    dispatch(logout());
+    dispatch(logout()); 
   };
 
   if (!user) {
